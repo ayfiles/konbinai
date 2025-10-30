@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-image.png";
 import heroImageMobile from "@/assets/hero-image-mobile.png";
-import heroVideoMobile from "@/assets/hero-video.mp4";
+import heroVideoMobile from "@/assets/hero-video.webm";
 import logoFont from "@/assets/konbinai logo font.png";
 
 const HeroSection = () => {
@@ -33,7 +33,7 @@ const HeroSection = () => {
           poster={heroImageMobile}
           className="lg:hidden w-full h-full object-cover opacity-70"
         >
-          <source src={heroVideoMobile} type="video/mp4" />
+          <source src={heroVideoMobile} type="video/webm" />
           Your browser does not support the video tag.
         </video>
         {/* Desktop Image */}
