@@ -2,22 +2,25 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from '@/context/LanguageContext';
+import { texts } from '@/lib/texts';
+import konbinaiLogo from '@/assets/konbinai logo.svg';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState<'EN' | 'DE'>('EN');
   const navigate = useNavigate();
+  const { currentLang, setCurrentLang } = useLanguage();
 
-  // Glassmorphism Language Switch: Use one state, two renders
+  // Glassmorphism Language Switch: Use context now
   const langSwitchBtn = (
     <button
       aria-label="Switch language"
       type="button"
-      className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60 ml-3"
+      className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-8 py-2 whitespace-nowrap transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
       onClick={() => setCurrentLang(currentLang === 'EN' ? 'DE' : 'EN')}
     >
-      {currentLang} | {currentLang === 'EN' ? 'DE' : 'EN'}
+      {texts[currentLang].lang_toggle}
     </button>
   );
 
@@ -52,38 +55,28 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="font-body font-medium text-[16px] lg:text-[18px] text-white/90 lowercase tracking-wide hover:text-white transition-colors"
+              className="flex items-center hover:opacity-80 transition-opacity"
             >
-              visual convenience studio.
+              <img
+                src={konbinaiLogo}
+                alt="konbinai logo"
+                className="h-[30px] lg:h-[36px] w-auto"
+                draggable={false}
+              />
             </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
-              <button
-                onClick={scrollToGallery}
-                className="font-body text-[15px] lg:text-[16px] text-white tracking-[0.02em] hover:text-white/80 transition-colors"
-              >
-                Content Creation
-              </button>
+            <div className="relative flex items-center gap-2 md:gap-4 h-16 md:h-auto">
               <Button
                 onClick={() => navigate("/project-inquiry")}
                 variant="default"
                 size="lg"
                 className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-8 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
               >
-                Contact Us
+                {texts[currentLang].contact_us}
               </Button>
-              {langSwitchBtn}
+              <div className="absolute left-1/2 -translate-x-1/2 top-[54px] md:static md:top-auto md:left-auto md:translate-x-0">
+                {langSwitchBtn}
+              </div>
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden text-white p-2"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
           </div>
         </div>
       </nav>
@@ -107,7 +100,7 @@ const Navbar = () => {
               size="lg"
               className="rounded-pill bg-white text-black hover:bg-white/90 font-label text-[16px] px-12 w-full max-w-xs"
             >
-              Contact Us
+              {texts[currentLang].contact_us}
             </Button>
             <div className="mt-4 flex justify-center w-full">{langSwitchBtn}</div>
           </div>

@@ -12,9 +12,12 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/context/LanguageContext";
+import { texts } from "@/lib/texts";
 
 const ContactSection = () => {
   const navigate = useNavigate();
+  const { currentLang } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,7 +26,6 @@ const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     try {
       await supabase.functions.invoke("send-notification", {
         body: {
@@ -31,7 +33,6 @@ const ContactSection = () => {
           ...formData,
         },
       });
-      
       toast.success("Thanks! We'll be in touch soon.");
       setFormData({ name: "", email: "", interest: "" });
     } catch (error) {
@@ -50,10 +51,10 @@ const ContactSection = () => {
             className="font-bold text-white text-[40px] lg:text-[56px] leading-[1.15] tracking-tight"
             style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
           >
-            Lets Create Together.
+            {texts[currentLang].contact_title}
           </h2>
           <p className="font-body text-white/85 text-[18px] lg:text-[20px]">
-            We collaborate with brands who want more than stock visuals.
+            {texts[currentLang].contact_subtitle}
           </p>
         </div>
 
@@ -61,7 +62,7 @@ const ContactSection = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="name" className="font-body text-white/90 text-[15px]">
-              Name
+              {texts[currentLang].form_name}
             </Label>
             <Input
               id="name"
@@ -75,7 +76,7 @@ const ContactSection = () => {
 
           <div className="space-y-2">
             <Label htmlFor="email" className="font-body text-white/90 text-[15px]">
-              Email
+              {texts[currentLang].form_email}
             </Label>
             <Input
               id="email"
@@ -89,7 +90,7 @@ const ContactSection = () => {
 
           <div className="space-y-2">
             <Label htmlFor="interest" className="font-body text-white/90 text-[15px]">
-              I'm interested in
+              {texts[currentLang].form_interest}
             </Label>
             <Select
               value={formData.interest}
@@ -100,11 +101,11 @@ const ContactSection = () => {
                 <SelectValue placeholder="Select an option" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ai-campaigns">AI Campaigns</SelectItem>
-                <SelectItem value="product-visuals">Product Visuals</SelectItem>
-                <SelectItem value="motion-video">Motion & Video</SelectItem>
-                <SelectItem value="creative-direction">Creative Direction</SelectItem>
-                <SelectItem value="consulting">Consulting</SelectItem>
+                <SelectItem value="ai-campaigns">{texts[currentLang].interest_ai}</SelectItem>
+                <SelectItem value="product-visuals">{texts[currentLang].interest_product}</SelectItem>
+                <SelectItem value="motion-video">{texts[currentLang].interest_motion}</SelectItem>
+                <SelectItem value="creative-direction">{texts[currentLang].interest_direction}</SelectItem>
+                <SelectItem value="consulting">{texts[currentLang].interest_consulting}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -115,7 +116,7 @@ const ContactSection = () => {
               size="lg"
               className="w-full rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] h-12 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
-              I'm Interested
+              {texts[currentLang].submit}
             </Button>
             <Button
               type="button"
@@ -123,7 +124,7 @@ const ContactSection = () => {
               size="lg"
               className="w-full rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] h-12 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
-              Full Project Inquiry
+              {texts[currentLang].full_inquiry}
             </Button>
           </div>
         </form>

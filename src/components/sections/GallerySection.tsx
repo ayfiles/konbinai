@@ -26,10 +26,13 @@ import northface3 from "@/assets/northface-3.png";
 import chanel1 from "@/assets/chanel-1.png";
 import chanel2 from "@/assets/chanel-2.png";
 import chanel3 from "@/assets/chanel-3.png";
+import { useLanguage } from '@/context/LanguageContext';
+import { texts } from '@/lib/texts';
 
 const GallerySection = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const { currentLang } = useLanguage();
 
   // List of projects
   const projects = [
@@ -119,10 +122,10 @@ const GallerySection = () => {
               className="font-bold text-white text-[40px] lg:text-[56px] leading-[1.15] tracking-tight"
               style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
             >
-              Previous Creations
+              {texts[currentLang].gallery_title}
             </h2>
             <p className="font-body text-white/70 text-[18px] lg:text-[20px] mt-4 max-w-[600px] mx-auto">
-              Visually cinematic. Emotionally magnetic.
+              {texts[currentLang].gallery_subtitle}
             </p>
           </div>
 
@@ -199,26 +202,58 @@ const GallerySection = () => {
 
       {/* Lightbox */}
       {lightboxOpen && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 lg:p-8 animate-fade-in">
-          <button
-            onClick={closeLightbox}
-            className="absolute top-6 right-6 text-white hover:text-white/80 z-10"
-            aria-label="Close lightbox"
-          >
-            <X size={32} />
-          </button>
+        <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 md:p-8 animate-fade-in" onClick={closeLightbox}>
+          <div className="relative w-full max-w-[980px] md:max-w-[860px] lg:max-w-[980px] max-h-[80vh] rounded-3xl bg-white/12 border border-white/20 backdrop-blur-frosted shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 text-white hover:text-white/80 z-10"
+              aria-label="Close lightbox"
+            >
+              <X size={28} />
+            </button>
+            <div className="p-6 md:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Info Card (1/3) */}
+                <div className="md:col-span-1">
+                  <div className="rounded-2xl bg-white/10 border border-white/20 backdrop-blur-frosted shadow-xl p-5 md:p-6 max-h-[80vh] overflow-y-auto hide-scrollbar">
+                    <h3 className="text-white font-bold text-xl md:text-2xl" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
+                      {selectedProject || 'Project Title'}
+                    </h3>
+                    <div className="text-white/70 text-sm mt-2">
+                      {/* Date + timeframe from translations if available */}
+                      <p>
+                        {(selectedProject && texts[currentLang].project_info[selectedProject]?.date) || 'Januar 2024'}
+                      </p>
+                      <p className="mt-1">{currentLang === 'DE' ? 'Zeitraum: 2 Wochen' : 'Timeframe: 2 weeks'}</p>
+                    </div>
+                    <p className="text-white/85 text-sm md:text-base leading-relaxed mt-4">
+                      {(selectedProject && texts[currentLang].project_info[selectedProject]?.description) ||
+                        (currentLang === 'DE'
+                          ? 'Beispielbeschreibung: Konzeption, Produktion und Postproduktion für eine visuelle Kampagne. Fokus auf Markenästhetik und Emotion.'
+                          : 'Sample description: Concept, production, and post-production for a visual campaign. Focused on brand aesthetics and emotion.')}
+                    </p>
+                  </div>
+                </div>
 
-          <div className="max-w-[1200px] w-full grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-[90vh] py-8">
-            {selectedImages.map((img, index) => (
-              <div key={index} className="rounded-[20px] overflow-hidden">
-                <img
-                  src={img}
-                  alt={`${selectedProject} - Image ${index + 1}`}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                {/* Images Card (2/3) */}
+                <div className="md:col-span-2">
+                  <div className="max-h-[80vh] overflow-y-auto hide-scrollbar">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {selectedImages.map((img, index) => (
+                        <div key={index} className="rounded-[18px] overflow-hidden">
+                          <img
+                            src={img}
+                            alt={`${selectedProject} - Image ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       )}

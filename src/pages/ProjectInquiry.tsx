@@ -13,10 +13,14 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Upload, X } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { texts } from "@/lib/texts";
 import { supabase } from "@/integrations/supabase/client";
+
 
 const ProjectInquiry = () => {
   const navigate = useNavigate();
+  const { currentLang } = useLanguage();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<Array<{ name: string; url: string }>>([]);
@@ -121,16 +125,19 @@ const ProjectInquiry = () => {
           className="flex items-center gap-2 text-white/70 hover:text-white transition-colors font-body text-[15px]"
         >
           <ArrowLeft size={18} />
-          Back to Home
+          {texts[currentLang].back_home}
         </button>
 
         {/* Header */}
         <div className="space-y-4">
-          <h1 className="font-display font-bold text-white text-[48px] lg:text-[64px] leading-[1.1] tracking-tight">
-            Project Inquiry
+          <h1
+            className="font-bold text-white text-[48px] lg:text-[64px] leading-[1.1] tracking-tight"
+            style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}
+          >
+            {texts[currentLang].project_inquiry_title}
           </h1>
           <p className="font-body text-white/85 text-[18px] lg:text-[20px]">
-            Tell us about your brand and creative needs. We'll craft a proposal tailored to your vision.
+            {texts[currentLang].project_inquiry_subtitle}
           </p>
         </div>
 
@@ -139,7 +146,7 @@ const ProjectInquiry = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="name" className="font-body text-white/90 text-[15px]">
-                Name *
+                {texts[currentLang].form_name} *
               </Label>
               <Input
                 id="name"
@@ -153,7 +160,7 @@ const ProjectInquiry = () => {
 
             <div className="space-y-2">
               <Label htmlFor="email" className="font-body text-white/90 text-[15px]">
-                Email *
+                {texts[currentLang].form_email} *
               </Label>
               <Input
                 id="email"
@@ -168,7 +175,7 @@ const ProjectInquiry = () => {
 
           <div className="space-y-2">
             <Label htmlFor="brand" className="font-body text-white/90 text-[15px]">
-              Brand / Company *
+              {texts[currentLang].form_brand} *
             </Label>
             <Input
               id="brand"
@@ -182,7 +189,7 @@ const ProjectInquiry = () => {
 
           <div className="space-y-2">
             <Label htmlFor="projectType" className="font-body text-white/90 text-[15px]">
-              Project Type *
+              {texts[currentLang].form_project_type} *
             </Label>
             <Select
               value={formData.projectType}
@@ -193,19 +200,19 @@ const ProjectInquiry = () => {
                 <SelectValue placeholder="Select project type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="campaign">Campaign Visuals</SelectItem>
-                <SelectItem value="product">Product Visuals</SelectItem>
-                <SelectItem value="motion">Motion & Video</SelectItem>
-                <SelectItem value="direction">Creative Direction</SelectItem>
-                <SelectItem value="retainer">Retainer</SelectItem>
-                <SelectItem value="custom">Custom Bundle</SelectItem>
+                <SelectItem value="campaign">{texts[currentLang].project_type_campaign}</SelectItem>
+                <SelectItem value="product">{texts[currentLang].project_type_product}</SelectItem>
+                <SelectItem value="motion">{texts[currentLang].project_type_motion}</SelectItem>
+                <SelectItem value="direction">{texts[currentLang].project_type_direction}</SelectItem>
+                <SelectItem value="retainer">{texts[currentLang].project_type_retainer}</SelectItem>
+                <SelectItem value="custom">{texts[currentLang].project_type_custom}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="details" className="font-body text-white/90 text-[15px]">
-              Project Details *
+              {texts[currentLang].form_project_details} *
             </Label>
             <Textarea
               id="details"
@@ -222,10 +229,10 @@ const ProjectInquiry = () => {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label className="font-body text-white/90 text-[15px]">
-                Upload References
+                {texts[currentLang].upload_references}
               </Label>
               <p className="font-body text-white/60 text-[14px]">
-                Upload references to your brand work, products you want to feature, mood boards, or any visual inspiration. All file types accepted.
+                {texts[currentLang].upload_references_description}
               </p>
             </div>
 
@@ -248,7 +255,7 @@ const ProjectInquiry = () => {
                     {isUploading ? "Uploading..." : "Click to upload files"}
                   </p>
                   <p className="font-body text-white/50 text-[13px] mt-1">
-                    Images, PDFs, videos, or any file type
+                    {texts[currentLang].upload_references_file_types}
                   </p>
                 </div>
               </label>
@@ -280,7 +287,7 @@ const ProjectInquiry = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="timeline" className="font-body text-white/90 text-[15px]">
-                Timeline *
+                {texts[currentLang].form_timeline} *
               </Label>
               <Select
                 value={formData.timeline}
@@ -291,17 +298,17 @@ const ProjectInquiry = () => {
                   <SelectValue placeholder="Select timeline" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="urgent">ASAP (1-2 weeks)</SelectItem>
-                  <SelectItem value="standard">Standard (2-4 weeks)</SelectItem>
-                  <SelectItem value="flexible">Flexible (1-2 months)</SelectItem>
-                  <SelectItem value="ongoing">Ongoing / Retainer</SelectItem>
+                  <SelectItem value="urgent">{texts[currentLang].timeline_urgent}</SelectItem>
+                  <SelectItem value="standard">{texts[currentLang].timeline_standard}</SelectItem>
+                  <SelectItem value="flexible">{texts[currentLang].timeline_flexible}</SelectItem>
+                  <SelectItem value="ongoing">{texts[currentLang].timeline_ongoing}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="budget" className="font-body text-white/90 text-[15px]">
-                Budget Range *
+                {texts[currentLang].form_budget}
               </Label>
               <Select
                 value={formData.budget}
@@ -312,11 +319,11 @@ const ProjectInquiry = () => {
                   <SelectValue placeholder="Select budget" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="under1k">Under $1,000 AUD</SelectItem>
-                  <SelectItem value="1k-3k">$1,000 - $3,000 AUD</SelectItem>
-                  <SelectItem value="3k-5k">$3,000 - $5,000 AUD</SelectItem>
-                  <SelectItem value="5k-10k">$5,000 - $10,000 AUD</SelectItem>
-                  <SelectItem value="10k+">$10,000+ AUD</SelectItem>
+                  <SelectItem value="under1k">{texts[currentLang].budget_under1k}</SelectItem>
+                  <SelectItem value="1k-3k">{texts[currentLang].budget_1k_3k}</SelectItem>
+                  <SelectItem value="3k-5k">{texts[currentLang].budget_3k_5k}</SelectItem>
+                  <SelectItem value="5k-10k">{texts[currentLang].budget_5k_10k}</SelectItem>
+                  <SelectItem value="10k+">{texts[currentLang].budget_10k}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -328,7 +335,7 @@ const ProjectInquiry = () => {
               size="lg"
               className="w-full rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] h-14 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
-              Submit Project Inquiry
+              {texts[currentLang].submit_project}
             </Button>
           </div>
         </form>

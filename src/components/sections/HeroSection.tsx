@@ -4,9 +4,12 @@ import heroImage from "@/assets/hero-image.png";
 import heroImageMobile from "@/assets/hero-image-mobile.png";
 import heroVideoMobile from "@/assets/hero-video.webm";
 import logoFont from "@/assets/konbinai logo font.png";
+import { useLanguage } from '@/context/LanguageContext';
+import { texts } from '@/lib/texts';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { currentLang } = useLanguage();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 300);
@@ -65,7 +68,7 @@ const HeroSection = () => {
               />
             </div>
             <p className="font-body text-white/90 text-[18px] lg:text-[22px] max-w-[600px]">
-              Creation. Directing. Consulting.
+              {texts[currentLang].hero_subtitle}
             </p>
           </div>
 
@@ -80,14 +83,14 @@ const HeroSection = () => {
               size="lg"
               className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
-              Lets Create
+              {texts[currentLang].hero_cta}
             </Button>
             <Button
               onClick={scrollToGallery}
               size="lg"
               className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
-              Portfolio
+              {texts[currentLang].portfolio}
             </Button>
           </div>
         </div>
