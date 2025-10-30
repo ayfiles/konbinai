@@ -93,6 +93,10 @@ export default {
           from: { width: "0" },
           to: { width: "100%" },
         },
+        'infinite-carousel': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -102,6 +106,7 @@ export default {
         "scale-in": "scale-in 0.6s ease-out",
         "slide-left": "slide-left 30s linear infinite",
         "draw-line": "draw-line 0.8s ease-out forwards",
+        'infinite-carousel': 'infinite-carousel 60s linear infinite',
       },
     },
   },

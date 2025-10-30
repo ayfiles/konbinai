@@ -126,8 +126,37 @@ const GallerySection = () => {
             </p>
           </div>
 
-          {/* Grid */}
-          <div>
+          {/* Carousel for desktop/ipad */}
+          {projects.length > 0 && (
+            <div className="hidden md:block group w-full relative overflow-x-hidden select-none pb-8">
+              <div className="flex w-max gap-8 animate-infinite-carousel group-hover:[animation-play-state:paused]">
+                {[...projects, ...projects].map((project, idx) => (
+                  <button
+                    key={project.name + '-' + idx}
+                    onClick={() => openLightbox(project.name)}
+                    className="relative aspect-[4/5] rounded-[24px] overflow-hidden cursor-pointer"
+                    style={{ width: '280px', minWidth: '280px', maxWidth: '320px' }}
+                  >
+                    <img
+                      src={project.thumbnail}
+                      alt={project.name}
+                      className="w-full h-full object-cover duration-700 transition-transform group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                    <div className="absolute bottom-6 left-6">
+                      <p className="font-body font-medium text-white text-[15px] tracking-wide">
+                        {project.name}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Grid only on mobile */}
+          <div className="block md:hidden">
             {projectRows.map((row, rowIdx) => (
               <div
                 key={rowIdx}
