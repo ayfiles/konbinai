@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-image.png";
 import heroImageMobile from "@/assets/hero-image-mobile.png";
+import heroVideoMobile from "@/assets/hero-video.mp4";
+import logoFont from "@/assets/konbinai logo font.png";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -22,12 +24,18 @@ const HeroSection = () => {
     <section className="relative h-screen w-full overflow-hidden bg-black">
       {/* Hero Image Background */}
       <div className="absolute inset-0">
-        {/* Mobile Image */}
-        <img
-          src={heroImageMobile}
-          alt="Cinematic studio backdrop"
-          className="lg:hidden w-full h-full object-cover opacity-70 transition-transform duration-[20s] ease-out hover:scale-105"
-        />
+        {/* Mobile Video statt Bild */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={heroImageMobile}
+          className="lg:hidden w-full h-full object-cover opacity-70"
+        >
+          <source src={heroVideoMobile} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         {/* Desktop Image */}
         <img
           src={heroImage}
@@ -49,11 +57,15 @@ const HeroSection = () => {
         >
           {/* Title */}
           <div className="space-y-3">
-            <h1 className="font-display font-bold text-white text-[42px] sm:text-[56px] lg:text-[80px] leading-[1.1] tracking-tight">
-              VISIONBOI Studios.
-            </h1>
+            <div className="relative">
+              <img
+                src={logoFont}
+                alt="VISIONBOI Studios"
+                className="h-[42px] sm:h-[56px] lg:h-[80px] w-auto object-contain"
+              />
+            </div>
             <p className="font-body text-white/90 text-[18px] lg:text-[22px] max-w-[600px]">
-              Your brand's creative lab powered by AI.
+              Creation. Directing. Consulting.
             </p>
           </div>
 
@@ -66,17 +78,16 @@ const HeroSection = () => {
                   ?.scrollIntoView({ behavior: "smooth" })
               }
               size="lg"
-              className="rounded-pill bg-white text-black hover:bg-white/90 font-label text-[15px] px-10 py-6"
+              className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
-              Start Your Project
+              Lets Create
             </Button>
             <Button
               onClick={scrollToGallery}
               size="lg"
-              variant="outline"
-              className="rounded-pill bg-white text-black hover:bg-white/90 border-white font-label text-[15px] px-10 py-6"
+              className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
-              View Work
+              Portfolio
             </Button>
           </div>
         </div>

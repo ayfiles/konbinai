@@ -41,12 +41,16 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="bg-black py-24 lg:py-32 px-6 lg:px-12">
+    <section id="contact" className="relative bg-black py-24 lg:py-32 px-6 lg:px-12">
+      <div className="pointer-events-none absolute -top-10 left-0 right-0 h-10 lg:-top-16 lg:h-16 bg-gradient-to-b from-charcoal to-black" />
       <div className="max-w-[700px] mx-auto space-y-12">
         {/* Heading */}
         <div className="text-center space-y-4">
-          <h2 className="font-display font-bold text-white text-[40px] lg:text-[56px] leading-[1.15] tracking-tight">
-            Work With VISIONBOI Studios.
+          <h2
+            className="font-bold text-white text-[40px] lg:text-[56px] leading-[1.15] tracking-tight"
+            style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+          >
+            Lets Create Together.
           </h2>
           <p className="font-body text-white/85 text-[18px] lg:text-[20px]">
             We collaborate with brands who want more than stock visuals.
@@ -96,10 +100,11 @@ const ContactSection = () => {
                 <SelectValue placeholder="Select an option" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="images">Image Packages</SelectItem>
-                <SelectItem value="motion">Motion Packages</SelectItem>
-                <SelectItem value="retainer">Retainers</SelectItem>
-                <SelectItem value="custom">Custom Bundle</SelectItem>
+                <SelectItem value="ai-campaigns">AI Campaigns</SelectItem>
+                <SelectItem value="product-visuals">Product Visuals</SelectItem>
+                <SelectItem value="motion-video">Motion & Video</SelectItem>
+                <SelectItem value="creative-direction">Creative Direction</SelectItem>
+                <SelectItem value="consulting">Consulting</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -108,7 +113,7 @@ const ContactSection = () => {
             <Button
               type="submit"
               size="lg"
-              className="w-full rounded-pill bg-white text-black hover:bg-white/90 font-label text-[15px] h-12"
+              className="w-full rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] h-12 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
               I'm Interested
             </Button>
@@ -116,8 +121,7 @@ const ContactSection = () => {
               type="button"
               onClick={() => navigate("/project-inquiry")}
               size="lg"
-              variant="outline"
-              className="w-full rounded-pill bg-transparent text-white border-white/30 hover:bg-white/10 font-label text-[15px] h-12"
+              className="w-full rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] h-12 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
               Full Project Inquiry
             </Button>

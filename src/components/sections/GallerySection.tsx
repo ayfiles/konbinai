@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import salomon1 from "@/assets/salomon-1.png";
 import salomon2 from "@/assets/salomon-2.png";
@@ -31,70 +31,66 @@ const GallerySection = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
+  // List of projects
   const projects = [
     {
       name: "Salomon",
       thumbnail: salomon1,
-      images: [
-        salomon1,
-        salomon2,
-        salomon3,
-        salomon4,
-        salomon5,
-        salomon6,
-      ],
+      images: [salomon1, salomon2, salomon3, salomon4, salomon5, salomon6],
     },
     {
       name: "Kith",
       thumbnail: kith1,
-      images: [
-        kith1,
-        kith2,
-        kith3,
-        kith4,
-      ],
+      images: [kith1, kith2, kith3, kith4],
     },
     {
       name: "The North Face",
       thumbnail: northface1,
-      images: [
-        northface1,
-        northface2,
-        northface3,
-      ],
+      images: [northface1, northface2, northface3],
     },
     {
       name: "Riot Hill",
       thumbnail: riot1,
-      images: [
-        riot1,
-        riot2,
-        riot3,
-        riot4,
-        riot5,
-      ],
+      images: [riot1, riot2, riot3, riot4, riot5],
     },
     {
       name: "SOI Studios",
       thumbnail: soi1,
-      images: [
-        soi1,
-        soi2,
-        soi3,
-        soi4,
-        soi5,
-      ],
+      images: [soi1, soi2, soi3, soi4, soi5],
     },
     {
       name: "Chanel Perfume",
       thumbnail: chanel1,
-      images: [
-        chanel1,
-        chanel2,
-        chanel3,
-      ],
+      images: [chanel1, chanel2, chanel3],
     },
   ];
+
+  // Build projectRows
+  const projectRows: typeof projects[][] = [];
+  for (let i = 0; i < projects.length; i += 3) {
+    projectRows.push(projects.slice(i, i + 3));
+  }
+
+  // Row-based reveal on scroll
+  useEffect(() => {
+    const rows = Array.from(document.querySelectorAll<HTMLElement>(".js-row-reveal"));
+    if (!rows.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            el.classList.add("animate-fade-up", "opacity-100", "translate-y-0");
+            el.classList.remove("opacity-0", "translate-y-4");
+            observer.unobserve(el);
+          }
+        });
+      },
+      {rootMargin: "0px 0px -10% 0px", threshold: 0.15}
+    );
+    rows.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const openLightbox = (projectName: string) => {
     setSelectedProject(projectName);
@@ -113,40 +109,60 @@ const GallerySection = () => {
 
   return (
     <>
-      <section id="campaign-gallery" className="bg-black py-24 lg:py-32 px-6 lg:px-12">
+      <section id="campaign-gallery" className="relative -mt-16 lg:-mt-24 bg-black py-24 lg:py-32 px-6 lg:px-12">
+        {/* Top gradient to smooth transition from hero into gallery */}
+        <div className="pointer-events-none absolute -top-10 left-0 right-0 h-10 lg:-top-16 lg:h-16 bg-gradient-to-b from-transparent to-black" />
         <div className="max-w-[1400px] mx-auto">
           {/* Title */}
           <div className="text-center mb-16 lg:mb-20">
-            <h2 className="font-display font-bold text-white text-[40px] lg:text-[56px] leading-[1.15] tracking-tight">
-              Campaign Gallery
+            <h2
+              className="font-bold text-white text-[40px] lg:text-[56px] leading-[1.15] tracking-tight"
+              style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+            >
+              Previous Creations
             </h2>
             <p className="font-body text-white/70 text-[18px] lg:text-[20px] mt-4 max-w-[600px] mx-auto">
-              Cinematic visuals designed to stop the scroll and drive action.
+              Visually cinematic. Emotionally magnetic.
             </p>
           </div>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {projects.map((project, index) => (
-              <button
-                key={project.name}
-                onClick={() => openLightbox(project.name)}
-                className="group relative aspect-[4/5] rounded-[24px] overflow-hidden animate-fade-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+          <div>
+            {projectRows.map((row, rowIdx) => (
+              <div
+                key={rowIdx}
+                className="js-row-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 opacity-0 translate-y-4"
               >
-                <img
-                  src={project.thumbnail}
-                  alt={project.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-6 left-6">
-                  <p className="font-body font-medium text-white text-[13px] lg:text-[14px] tracking-wide">
-                    {project.name}
-                  </p>
-                </div>
-              </button>
+                {row.map((project, colIdx) => (
+                  <button
+                    key={project.name}
+                    onClick={() => openLightbox(project.name)}
+                    className="group relative aspect-[4/5] rounded-[24px] overflow-hidden"
+                    style={{
+                      transition: 'opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1)',
+                      transitionDelay: `${rowIdx * 0.04 + colIdx * 0.09}s`,
+                    }}
+                  >
+                    <img
+                      src={project.thumbnail}
+                      alt={project.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute bottom-6 left-6">
+                      <p className="font-body font-medium text-white text-[13px] lg:text-[14px] tracking-wide">
+                        {project.name}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+                {/* If last row is short, fill to complete grid */}
+                {row.length < 3 &&
+                  Array.from({ length: 3 - row.length }).map((_, i) => (
+                    <div key={`empty-${i}`} />
+                  ))}
+              </div>
             ))}
           </div>
         </div>

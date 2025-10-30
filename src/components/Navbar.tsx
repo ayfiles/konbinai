@@ -6,7 +6,20 @@ import { Button } from "@/components/ui/button";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState<'EN' | 'DE'>('EN');
   const navigate = useNavigate();
+
+  // Glassmorphism Language Switch: Use one state, two renders
+  const langSwitchBtn = (
+    <button
+      aria-label="Switch language"
+      type="button"
+      className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60 ml-3"
+      onClick={() => setCurrentLang(currentLang === 'EN' ? 'DE' : 'EN')}
+    >
+      {currentLang} | {currentLang === 'EN' ? 'DE' : 'EN'}
+    </button>
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +54,7 @@ const Navbar = () => {
               to="/"
               className="font-body font-medium text-[16px] lg:text-[18px] text-white/90 lowercase tracking-wide hover:text-white transition-colors"
             >
-              visions made possible.
+              visual convenience studio.
             </Link>
 
             {/* Desktop Navigation */}
@@ -56,10 +69,11 @@ const Navbar = () => {
                 onClick={() => navigate("/project-inquiry")}
                 variant="default"
                 size="lg"
-                className="rounded-pill bg-white text-black hover:bg-white/90 font-label text-[15px] px-8"
+                className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-8 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
               >
                 Contact Us
               </Button>
+              {langSwitchBtn}
             </div>
 
             {/* Mobile Menu Button */}
@@ -95,6 +109,7 @@ const Navbar = () => {
             >
               Contact Us
             </Button>
+            <div className="mt-4 flex justify-center w-full">{langSwitchBtn}</div>
           </div>
         </div>
       )}

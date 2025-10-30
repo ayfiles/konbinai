@@ -326,7 +326,7 @@ const ProjectInquiry = () => {
             <Button
               type="submit"
               size="lg"
-              className="w-full rounded-pill bg-white text-black hover:bg-white/90 font-label text-[15px] h-14"
+              className="w-full rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] h-14 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
               Submit Project Inquiry
             </Button>
