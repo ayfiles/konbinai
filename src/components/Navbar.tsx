@@ -12,15 +12,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { currentLang, setCurrentLang } = useLanguage();
 
-  // Glassmorphism Language Switch: Use context now
+  // Glassmorphism Language Switch: show only current language (EN or DE)
   const langSwitchBtn = (
     <button
       aria-label="Switch language"
       type="button"
-      className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-8 py-2 whitespace-nowrap transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
+      className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-5 py-2 whitespace-nowrap transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
       onClick={() => setCurrentLang(currentLang === 'EN' ? 'DE' : 'EN')}
     >
-      {texts[currentLang].lang_toggle}
+      {currentLang}
     </button>
   );
 
