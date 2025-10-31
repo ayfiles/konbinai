@@ -35,6 +35,7 @@ const ProjectInquiry = () => {
     budget: "",
   });
   const [acceptPrivacy, setAcceptPrivacy] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -357,6 +358,46 @@ const ProjectInquiry = () => {
             </Button>
           </div>
         </form>
+
+        {privacyOpen && (
+          <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 md:p-8 animate-fade-in" onClick={() => setPrivacyOpen(false)}>
+            <div className="relative w-full max-w-[820px] max-h-[80vh] rounded-3xl bg-white/12 border border-white/20 backdrop-blur-frosted shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+                <h3 className="text-white font-bold text-xl" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
+                  {currentLang === 'DE' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+                </h3>
+                <button onClick={() => setPrivacyOpen(false)} className="text-white/80 hover:text-white font-body">✕</button>
+              </div>
+              <div className="p-6 overflow-y-auto max-h-[70vh] space-y-4 text-white/85">
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Wir verarbeiten Ihre Angaben ausschließlich zur Bearbeitung Ihrer Projektanfrage. Ihre Daten werden sicher gespeichert und nicht an Dritte verkauft.'
+                    : 'We process your information solely to handle your project inquiry. Your data is stored securely and will not be sold to third parties.'}
+                </p>
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertrag/ vorvertragliche Maßnahmen). Optional übermittelte Referenzdateien werden nur zur Angebotserstellung verwendet.'
+                    : 'The legal basis is Art. 6(1)(b) GDPR (contract/pre-contractual measures). Any files you upload are used only for creating a proposal.'}
+                </p>
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Sie können eine Auskunft, Berichtigung oder Löschung Ihrer Daten verlangen. Schreiben Sie uns hierzu jederzeit.'
+                    : 'You may request access, correction, or deletion of your data at any time. Just contact us.'}
+                </p>
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Mit Klick auf „Absenden“ stimmen Sie der Verarbeitung gemäß dieser Datenschutzerklärung zu.'
+                    : 'By clicking “Submit”, you agree to the processing described in this privacy policy.'}
+                </p>
+              </div>
+              <div className="px-6 py-4 border-t border-white/10 flex justify-end">
+                <Button onClick={() => setPrivacyOpen(false)} className="rounded-pill bg-white text-black hover:bg-white/90 font-label text-[14px] px-6">
+                  {currentLang === 'DE' ? 'Schließen' : 'Close'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
