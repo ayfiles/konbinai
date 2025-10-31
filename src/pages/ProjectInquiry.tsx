@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -33,6 +34,7 @@ const ProjectInquiry = () => {
     timeline: "",
     budget: "",
   });
+  const [acceptPrivacy, setAcceptPrivacy] = useState(false);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -76,6 +78,10 @@ const ProjectInquiry = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!acceptPrivacy) {
+      toast.error(currentLang === 'DE' ? 'Bitte stimmen Sie der Datenschutzerklärung zu.' : 'Please accept the privacy policy.');
+      return;
+    }
     
     try {
       await supabase.functions.invoke("send-notification", {
@@ -330,6 +336,18 @@ const ProjectInquiry = () => {
           </div>
 
           <div className="pt-6">
+            {/* Privacy consent */}
+            <div className="flex items-start gap-3 mb-5">
+              <Checkbox id="privacy" checked={acceptPrivacy} onCheckedChange={(v) => setAcceptPrivacy(Boolean(v))} className="mt-1" />
+              <label htmlFor="privacy" className="font-body text-white/80 text-[14px] leading-6 select-none">
+                {currentLang === 'DE'
+                  ? 'Ich habe die Datenschutzerklärung gelesen und stimme ihr zu.'
+                  : 'I have read and agree to the privacy policy.'}{" "}
+                <a href="/privacy" className="underline hover:text-white" target="_blank" rel="noreferrer">
+                  {currentLang === 'DE' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+                </a>
+              </label>
+            </div>
             <Button
               type="submit"
               size="lg"
