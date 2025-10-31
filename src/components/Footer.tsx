@@ -3,9 +3,9 @@ import { Instagram, Linkedin } from "lucide-react";
 const Footer = () => {
   return (
     <footer className="bg-transparent">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-8">
-        <div className="rounded-[24px] bg-white/10 border border-white/20 backdrop-blur-frosted shadow-[0_8px_30px_rgba(0,0,0,0.25)] px-5 lg:px-8 py-5">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 justify-between">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-6">
+        <div className="rounded-[24px] bg-white/10 border border-white/20 backdrop-blur-frosted shadow-[0_8px_30px_rgba(0,0,0,0.25)] px-5 lg:px-8 py-3">
+          <div className="flex flex-row items-center justify-between gap-3 md:gap-6 flex-wrap">
             {/* Left: legal */}
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-4 text-white/80 font-body text-[13px]">
               <span className="whitespace-nowrap">©2025 konbinai. All rights reserved</span>
@@ -20,7 +20,7 @@ const Footer = () => {
             </div>
 
             {/* Right: socials */}
-            <div className="flex items-center gap-2 self-end md:self-auto">
+            <div className="flex items-center gap-2 ml-auto">
               <a
                 href="https://instagram.com/yourhandle"
                 target="_blank"
