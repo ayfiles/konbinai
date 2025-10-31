@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -23,9 +24,15 @@ const ContactSection = () => {
     email: "",
     interest: "",
   });
+  const [acceptPrivacy, setAcceptPrivacy] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!acceptPrivacy) {
+      toast.error(currentLang === 'DE' ? 'Bitte stimmen Sie der Datenschutzerklärung zu.' : 'Please accept the privacy policy.');
+      return;
+    }
     try {
       await supabase.functions.invoke("send-notification", {
         body: {
@@ -35,6 +42,7 @@ const ContactSection = () => {
       });
       toast.success("Thanks! We'll be in touch soon.");
       setFormData({ name: "", email: "", interest: "" });
+      setAcceptPrivacy(false);
     } catch (error) {
       console.error("Error sending notification:", error);
       toast.error("Failed to send. Please try again.");
@@ -110,7 +118,24 @@ const ContactSection = () => {
             </Select>
           </div>
 
-          <div className="flex flex-col gap-3 pt-4">
+          {/* Privacy consent */}
+          <div className="pt-2">
+            <div className="flex items-start gap-3 mb-4">
+              <Checkbox id="privacy-mini" checked={acceptPrivacy} onCheckedChange={(v) => setAcceptPrivacy(Boolean(v))} className="mt-1" />
+              <div className="font-body text-white/80 text-[14px] leading-6">
+                <label htmlFor="privacy-mini" className="select-none cursor-pointer">
+                  {currentLang === 'DE'
+                    ? 'Ich habe die Datenschutzerklärung gelesen und stimme ihr zu.'
+                    : 'I have read and agree to the privacy policy.'}
+                </label>{" "}
+                <button type="button" onClick={() => setPrivacyOpen(true)} className="underline hover:text-white">
+                  {currentLang === 'DE' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 pt-2">
             <Button
               type="submit"
               size="lg"
@@ -128,6 +153,45 @@ const ContactSection = () => {
             </Button>
           </div>
         </form>
+        {privacyOpen && (
+          <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 md:p-8 animate-fade-in" onClick={() => setPrivacyOpen(false)}>
+            <div className="relative w-full max-w-[820px] max-h-[80vh] rounded-3xl bg-white/12 border border-white/20 backdrop-blur-frosted shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+                <h3 className="text-white font-bold text-xl" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
+                  {currentLang === 'DE' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+                </h3>
+                <button onClick={() => setPrivacyOpen(false)} className="text-white/80 hover:text-white font-body">✕</button>
+              </div>
+              <div className="p-6 overflow-y-auto max-h-[70vh] space-y-4 text-white/85">
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Wir verarbeiten Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage. Ihre Daten werden sicher gespeichert und nicht an Dritte verkauft.'
+                    : 'We process your information solely to handle your inquiry. Your data is stored securely and will not be sold to third parties.'}
+                </p>
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertrag/ vorvertragliche Maßnahmen).'
+                    : 'The legal basis is Art. 6(1)(b) GDPR (contract/pre-contractual measures).'}
+                </p>
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Sie können Auskunft, Berichtigung oder Löschung Ihrer Daten verlangen.'
+                    : 'You can request access, correction, or deletion of your data at any time.'}
+                </p>
+                <p className="font-body text-[15px]">
+                  {currentLang === 'DE'
+                    ? 'Mit Klick auf „Senden“ stimmen Sie der Verarbeitung gemäß dieser Datenschutzerklärung zu.'
+                    : 'By clicking “Submit”, you agree to the processing described in this privacy policy.'}
+                </p>
+              </div>
+              <div className="px-6 py-4 border-t border-white/10 flex justify-end">
+                <Button onClick={() => setPrivacyOpen(false)} className="rounded-pill bg-white text-black hover:bg-white/90 font-label text-[14px] px-6">
+                  {currentLang === 'DE' ? 'Schließen' : 'Close'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
