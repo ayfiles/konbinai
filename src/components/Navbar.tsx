@@ -17,7 +17,7 @@ const Navbar = () => {
     <button
       aria-label="Switch language"
       type="button"
-      className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-5 py-2 whitespace-nowrap transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
+      className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-8 py-2 whitespace-nowrap transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
       onClick={() => setCurrentLang(currentLang === 'EN' ? 'DE' : 'EN')}
     >
       {currentLang}
@@ -64,7 +64,8 @@ const Navbar = () => {
                 draggable={false}
               />
             </Link>
-            <div className="relative flex items-center gap-2 md:gap-4 h-16 md:h-auto">
+            <div className="flex items-center gap-2 md:gap-4 h-16 md:h-auto">
+              {langSwitchBtn}
               <Button
                 onClick={() => navigate("/project-inquiry")}
                 variant="default"
@@ -73,9 +74,6 @@ const Navbar = () => {
               >
                 {texts[currentLang].contact_us}
               </Button>
-              <div className="absolute left-1/2 -translate-x-1/2 top-[54px] md:static md:top-auto md:left-auto md:translate-x-0">
-                {langSwitchBtn}
-              </div>
             </div>
           </div>
         </div>
