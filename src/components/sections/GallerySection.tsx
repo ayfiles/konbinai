@@ -231,22 +231,71 @@ type MobileProjectsCarouselProps = {
 };
 
 const MobileProjectsCarousel = ({ projects, onOpen }: MobileProjectsCarouselProps) => {
-  const [emblaRef] = useEmblaCarousel({
-    loop: false,
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
     align: 'start',
     dragFree: true,
     containScroll: 'trimSnaps',
   } as any);
 
+  // Simple autoplay: advance every few seconds, pause on interaction
+  useEffect(() => {
+    if (!emblaApi) return;
+    let timer: number | undefined;
+    let paused = false;
+
+    const play = () => {
+      if (paused) return;
+      stop();
+      timer = window.setInterval(() => {
+        if (!emblaApi) return;
+        if (emblaApi.canScrollNext()) emblaApi.scrollNext();
+        else emblaApi.scrollTo(0);
+      }, 2800); // slow auto-advance
+    };
+
+    const stop = () => {
+      if (timer !== undefined) {
+        clearInterval(timer);
+        timer = undefined;
+      }
+    };
+
+    const pause = () => {
+      paused = true;
+      stop();
+    };
+
+    const resume = () => {
+      paused = false;
+      play();
+    };
+
+    play();
+    emblaApi.on('pointerDown', pause);
+    emblaApi.on('pointerUp', () => setTimeout(resume, 1000));
+    emblaApi.on('reInit', play);
+
+    return () => {
+      stop();
+    };
+  }, [emblaApi]);
+
   return (
     <div className="block md:hidden">
-      <div className="overflow-hidden" ref={emblaRef}>
+      <div
+        className="overflow-hidden"
+        ref={emblaRef}
+        onMouseEnter={() => {/* desktop hover pause noop on mobile */}}
+      >
         <div className="flex gap-4 pl-1">
           {projects.map((project) => (
             <button
               key={project.name}
               onClick={() => onOpen(project.name)}
               className="relative aspect-[4/5] rounded-[24px] overflow-hidden flex-[0_0_86%] sm:flex-[0_0_70%]"
+              onTouchStart={(e) => { /* pause handled via embla pointerDown */ }}
+              onTouchEnd={(e) => { /* resume handled via embla pointerUp */ }}
             >
               <img
                 src={project.thumbnail}
