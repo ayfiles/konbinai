@@ -340,14 +340,16 @@ const ProjectInquiry = () => {
             {/* Privacy consent */}
             <div className="flex items-start gap-3 mb-5">
               <Checkbox id="privacy" checked={acceptPrivacy} onCheckedChange={(v) => setAcceptPrivacy(Boolean(v))} className="mt-1" />
-              <label htmlFor="privacy" className="font-body text-white/80 text-[14px] leading-6 select-none">
-                {currentLang === 'DE'
-                  ? 'Ich habe die Datenschutzerklärung gelesen und stimme ihr zu.'
-                  : 'I have read and agree to the privacy policy.'}{" "}
-                <a href="/privacy" className="underline hover:text-white" target="_blank" rel="noreferrer">
+              <div className="font-body text-white/80 text-[14px] leading-6">
+                <label htmlFor="privacy" className="select-none cursor-pointer">
+                  {currentLang === 'DE'
+                    ? 'Ich habe die Datenschutzerklärung gelesen und stimme ihr zu.'
+                    : 'I have read and agree to the privacy policy.'}
+                </label>{" "}
+                <button type="button" onClick={() => setPrivacyOpen(true)} className="underline hover:text-white">
                   {currentLang === 'DE' ? 'Datenschutzerklärung' : 'Privacy Policy'}
-                </a>
-              </label>
+                </button>
+              </div>
             </div>
             <Button
               type="submit"
