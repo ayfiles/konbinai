@@ -20,7 +20,7 @@ const Footer = () => {
             </div>
 
             {/* Right: socials */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 self-end md:self-auto">
               <a
                 href="https://instagram.com/yourhandle"
                 target="_blank"
