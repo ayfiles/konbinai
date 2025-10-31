@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { X } from "lucide-react";
 import salomon1 from "@/assets/salomon-1.png";
 import salomon2 from "@/assets/salomon-2.png";
@@ -158,45 +159,8 @@ const GallerySection = () => {
             </div>
           )}
 
-          {/* Grid only on mobile */}
-          <div className="block md:hidden">
-            {projectRows.map((row, rowIdx) => (
-              <div
-                key={rowIdx}
-                className="js-row-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 opacity-0 translate-y-4"
-              >
-                {row.map((project, colIdx) => (
-                  <button
-                    key={project.name}
-                    onClick={() => openLightbox(project.name)}
-                    className="group relative aspect-[4/5] rounded-[24px] overflow-hidden"
-                    style={{
-                      transition: 'opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1)',
-                      transitionDelay: `${rowIdx * 0.04 + colIdx * 0.09}s`,
-                    }}
-                  >
-                    <img
-                      src={project.thumbnail}
-                      alt={project.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    <div className="absolute bottom-6 left-6">
-                      <p className="font-body font-medium text-white text-[13px] lg:text-[14px] tracking-wide">
-                        {project.name}
-                      </p>
-                    </div>
-                  </button>
-                ))}
-                {/* If last row is short, fill to complete grid */}
-                {row.length < 3 &&
-                  Array.from({ length: 3 - row.length }).map((_, i) => (
-                    <div key={`empty-${i}`} />
-                  ))}
-              </div>
-            ))}
-          </div>
+          {/* Mobile: swipe carousel */}
+          <MobileProjectsCarousel projects={projects} onOpen={openLightbox} />
         </div>
       </section>
 
@@ -258,6 +222,49 @@ const GallerySection = () => {
         </div>
       )}
     </>
+  );
+};
+
+type MobileProjectsCarouselProps = {
+  projects: { name: string; thumbnail: string }[];
+  onOpen: (name: string) => void;
+};
+
+const MobileProjectsCarousel = ({ projects, onOpen }: MobileProjectsCarouselProps) => {
+  const [emblaRef] = useEmblaCarousel({
+    loop: false,
+    align: 'start',
+    dragFree: true,
+    containScroll: 'trimSnaps',
+  } as any);
+
+  return (
+    <div className="block md:hidden">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-4 pl-1">
+          {projects.map((project) => (
+            <button
+              key={project.name}
+              onClick={() => onOpen(project.name)}
+              className="relative aspect-[4/5] rounded-[24px] overflow-hidden flex-[0_0_86%] sm:flex-[0_0_70%]"
+            >
+              <img
+                src={project.thumbnail}
+                alt={project.name}
+                className="w-full h-full object-cover transition-transform duration-700"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-5 left-5">
+                <p className="font-body font-medium text-white text-[13px] tracking-wide">
+                  {project.name}
+                </p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
