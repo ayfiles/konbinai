@@ -73,7 +73,7 @@ const HeroSection = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 items-center sm:items-start">
             <Button
               onClick={() =>
                 document
