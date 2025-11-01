@@ -81,14 +81,14 @@ const HeroSection = () => {
                   ?.scrollIntoView({ behavior: "smooth" })
               }
               size="lg"
-              className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
+              className="w-[70%] sm:w-auto rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
               {texts[currentLang].hero_cta}
             </Button>
             <Button
               onClick={scrollToGallery}
               size="lg"
-              className="rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
+              className="w-[70%] sm:w-auto rounded-pill bg-white/20 border border-white/30 ring-1 ring-white/40 shadow-xl backdrop-blur-frosted text-white font-label text-[15px] px-10 py-6 transition-all duration-300 hover:bg-white/10 hover:ring-white/60"
             >
               {texts[currentLang].portfolio}
             </Button>
